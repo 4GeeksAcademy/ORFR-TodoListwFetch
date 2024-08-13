@@ -6,8 +6,9 @@ import ReactDOM from "react-dom/client";
 import "../styles/index.css";
 
 //import your own components
-import Home from "./component/home.jsx";
+import Home2 from "./component/home2.jsx";
 
 //render your react application
-ReactDOM.createRoot(document.getElementById('app')).render(<Home/>);
+ReactDOM.createRoot(document.getElementById('app')).render(<Home2/>);
+
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark}  from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faCircleXmark}  from '@fortawesome/free-solid-svg-icons';
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
@@ -31,7 +31,7 @@ const Home = () => {
 			<div className="container w-50 m-auto bg-light">
 				<div className="row">
 					<div>
-						<input type="text" name="" id="" onChange={capturarTarea} onKeyDown={insertarTarea} value={tarea} />
+						<input type="text" name="" id="" onChange={capturarTarea} onKeyDown={insertarTarea} value={tarea} placeholder="Escriba aqui, luego presione Enter" />
 						<ul>
 							{listaTareas.map((item,index)=> (<li key={index}>{item} </li>))}
 						</ul>
