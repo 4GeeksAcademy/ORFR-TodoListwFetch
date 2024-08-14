@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark}  from '@fortawesome/free-solid-svg-icons';
 
@@ -7,15 +7,19 @@ import rigoImage from "../../img/rigo-baby.jpg";
 
 //create your first component
 const Home2 = () => {
+
+	useEffect(()=>{
+		// crearUser()
+		obtenerTareas()
+	},[])
+
+
 	let [tarea,setTarea] = useState("");
 	let [listaTareas,setlistaTareas] = useState([]);
 	
 	// function capturarTarea(event) {
 	// 	setTarea(event.target.value);
 	// 	
-		
-
-
 	// }
 
 	function insertarTarea(event) {
@@ -23,6 +27,7 @@ const Home2 = () => {
 
 			
 			setlistaTareas(listaTareas.concat(tarea));
+			crearTareas();
 			setTarea("");	
 			
 		}
@@ -56,6 +61,50 @@ const Home2 = () => {
 			</div>
 		</div>
 	);
+
+
+
+	function crearUser() {
+		fetch(
+			'https://playground.4geeks.com/todo/users/orubenfr',{
+				method: 'POST',
+				headers:{
+					"Content-Type": "application/json"
+				}
+			})
+		.then((response)=>response.json())
+		.then((datauser)=>console.log(datauser))
+		.catch((error)=>console.log(error));
+	}
+
+
+	function obtenerTareas() {
+		fetch(
+			'https://playground.4geeks.com/todo/users/orubenfr',{
+				method: 'GET',
+			})
+		.then((response)=>response.json())
+		.then((listatareas)=>console.log(listatareas))
+		.catch((error)=>console.log(error));
+
+	}
+
+	function crearTareas(){
+		fetch(
+			'https://playground.4geeks.com/todo/users/orubenfr',{
+				method: 'PUT',
+				body: JSON.stringify(listaTareas),
+				headers: {
+					"Content-Type": "application/json"
+				  }
+			})
+		.then((response)=>response.json())
+		.then((vertareas)=>console.log(vertareas))
+		.catch((error)=>console.log(error));
+
+	}
+
+
 };
 
 export default Home2;
