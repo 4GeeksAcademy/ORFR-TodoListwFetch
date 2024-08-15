@@ -11,11 +11,15 @@ const Home2 = () => {
 	useEffect(()=>{
 		// crearUser()
 		obtenerTareas()
+		eliminarTareas()
+		// crearTareas()
 	},[])
 
 
 	let [tarea,setTarea] = useState("");
 	let [listaTareas,setlistaTareas] = useState([]);
+	let tareasapi={};
+	let idtarea="";
 	
 	// function capturarTarea(event) {
 	// 	setTarea(event.target.value);
@@ -23,20 +27,30 @@ const Home2 = () => {
 	// }
 
 	function insertarTarea(event) {
+		
 		if (event.key === 'Enter') {
-
 			
 			setlistaTareas(listaTareas.concat(tarea));
-			crearTareas();
-			setTarea("");	
+			crearTareas();	
+			// listaTareas.map((item,index)=>(
+			// 	(tareasapi[index]=idtarea)
+			// 		)
+					
+			// 	);
+			
+			setTarea("");
+			console.log(tareasapi);
+			// console.log(listaTareas);	
 			
 		}
 	}	
 
-	function eliminarTarea(index) {
-	 let newlista =listaTareas.concat();	
-	newlista.splice(index,1)
+	function eliminarTarea(id) {
+	//  let newlista =listaTareas.concat();	
+	// newlista.splice(index,1)
+	const newlista = listaTareas.filter((item)=>item.id !==id);
 	setlistaTareas(newlista);
+	eliminarTareas(id);
 		
 	}
 		
@@ -50,7 +64,7 @@ const Home2 = () => {
 						<div className="col-12"><input type="text" name="" id="" onChange={(e)=>setTarea(e.target.value)} onKeyDown={insertarTarea} value={tarea} placeholder="Escriba aqui, luego 'Enter'" /></div>
 						<div>
 						<ul className="text-start-between">													       {/*()=> para que no se renderice todo con cada map */}
-							{listaTareas.map((item,index)=> (<li className="d-flex justify-content-between my-3 border-white border-opacity-10" key={index}>{item} <button type="button" onClick={()=>eliminarTarea(index)} className="text-end position-relative border-0" ><FontAwesomeIcon icon={faCircleXmark} /></button> </li>))}
+							{listaTareas.map((item,index)=> (<li className="d-flex justify-content-between my-3 border-white border-opacity-10" key={index}>{item.label} <button type="button" onClick={()=>eliminarTarea(item.id)} className="text-end position-relative border-0" ><FontAwesomeIcon icon={faCircleXmark} /></button> </li>))}
 							
 						</ul>
 						
@@ -84,27 +98,65 @@ const Home2 = () => {
 				method: 'GET',
 			})
 		.then((response)=>response.json())
-		.then((listatareas)=>console.log(listatareas))
+		.then((data)=>setlistaTareas(data.todos))
 		.catch((error)=>console.log(error));
 
 	}
 
 	function crearTareas(){
 		fetch(
-			'https://playground.4geeks.com/todo/users/orubenfr',{
-				method: 'PUT',
-				body: JSON.stringify(listaTareas),
+			'https://playground.4geeks.com/todo/todos/orubenfr',{
+				method: 'POST',
 				headers: {
-					"Content-Type": "application/json"
-				  }
+					'Content-Type': 'application/json'
+				  },
+				body: JSON.stringify(
+					{
+						"label": tarea,
+						"is_done": false
+					  }
+				  ),
+				
 			})
-		.then((response)=>response.json())
-		.then((vertareas)=>console.log(vertareas))
+		.then((response)=>response.json()) // 
+		.then((data)=>{
+			setlistaTareas([...listaTareas,data]) // ... spread operator accede directo al contenido
+		})
+			// 	(
+				
+			// 	// idtarea=response.id
+			// // console.log(idtarea)
+			// )
+		.catch((error)=>console.log(error));
+
+		
+
+	}
+
+	function eliminarTareas(id){
+		fetch(
+			`https://playground.4geeks.com/todo/todos/${id}`,{
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json'
+				  },
+				// body: JSON.stringify(
+				// 	{
+				// 		"label": tarea,
+				// 		"is_done": false
+				// 	  }
+				//   ),
+				
+			})
+		.then((response)=>response.json()) // 
+		.then((response)=>console.log(response))
 		.catch((error)=>console.log(error));
 
 	}
 
 
+
 };
+
 
 export default Home2;
